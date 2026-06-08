@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lanxin Zheng</title>
+  <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Merriweather:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+  <style>
+    /* ── VARIABLES ─────────────────────────────── */
+    :root {
+      --cream:      #eeeade;
+      --cream-dk:   #e5e0d0;
+      --ink:        #2a2825;
+      --ink-lt:     #6b6760;
+      --blue:       #6b7f96;
+      --blue-lt:    #8fa0b3;
+      --blue-bg:    #dde4eb;
+      --rule:       #c8c2b2;
+
+      /* Three-font system */
+      --f-title:    'Julius Sans One', sans-serif;   /* big titles */
+      --f-sub:      'Copperplate', 'Copperplate Gothic Light', Georgia, serif; /* subtitles, labels */
+      --f-body:     'Merriweather', Georgia, serif;  /* body text */
+    }
+
+    /* ── RESET ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--f-body);
+      font-size: 14px;
+      line-height: 1.85;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    /* ── LANG SWITCH ───────────────────────────── */
+.lang-switch {
+  position: fixed;
+  top: 18px;
+  right: 32px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+/* Etiquetas "ES" y "EN" */
+.lang-label {
+  font-family: var(--f-sub);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--ink-lt);
+  transition: color 0.3s ease;
+}
+
+/* La pista/riel del switch */
+.switch-track {
+  width: 44px;
+  height: 22px;
+  background: var(--cream-dk);
+  border-radius: 20px;
+  position: relative;
+  transition: background 0.3s ease;
+  border: 1px solid var(--rule);
+}
+
+/* El círculo que se desliza */
+.switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: var(--ink);
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Estado cuando el idioma activo es inglés */
+.lang-switch.en .switch-thumb {
+  transform: translateX(22px);
+}
+
+.lang-switch.en .right-label {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.lang-switch.en .left-label {
+  color: var(--ink-lt);
+}
+
+/* Estado cuando el idioma activo es español (por defecto) */
+.lang-switch .left-label {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.lang-switch .right-label {
+  color: var(--ink-lt);
+}
+
+    /* ── TOP BAR ───────────────────────────────── */
+    .site-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 800;
+      background: var(--cream);
+      border-bottom: 1px solid var(--rule);
+      padding: 13px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .bar-name {
+      font-family: var(--f-sub);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--ink-lt);
+    }
+    .bar-contact {
+      font-family: var(--f-body);
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--ink-lt);
+      letter-spacing: 0.03em;
+    }
+
+    /* ── HERO ──────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      padding: 110px 10vw 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+    }
+
+    /* "Personal" label above name — Copperplate subtitle */
+    .hero-label {
+      font-family: var(--f-sub);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    /* Main name — Julius Sans One, the big title */
+    .hero-name {
+      font-family: var(--f-title);
+      font-size: clamp(2.6rem, 7vw, 6rem);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: var(--ink);
+      line-height: 1.05;
+      margin-bottom: 2rem;
+    }
+
+    .hero-divider {
+      width: 60px;
+      height: 1px;
+      background: var(--rule);
+      margin: 0 auto 2rem;
+    }
+
+    /* Description — Merriweather body */
+    .hero-desc {
+      font-family: var(--f-body);
+      font-size: 0.88rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ink-lt);
+      max-width: 500px;
+      line-height: 2;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Contact links — Copperplate */
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem 2.5rem;
+      justify-content: center;
+      font-family: var(--f-sub);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--ink-lt);
+    }
+    .hero-links a:hover { color: var(--blue); }
+
+    .ai-tag {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--f-sub);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: var(--blue-lt);
+      white-space: nowrap;
+    }
+
+    /* ── SECTIONS ──────────────────────────────── */
+    .section {
+      padding: 80px 10vw;
+      border-bottom: 1px solid var(--rule);
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* Section title — Julius Sans One */
+    .section-title {
+      font-family: var(--f-title);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    /* Section number — Copperplate */
+    .section-num {
+      font-family: var(--f-sub);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--blue-lt);
+    }
+
+    /* ── PROFILE ───────────────────────────────── */
+    .profile-text {
+      font-family: var(--f-body);
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--ink-lt);
+      max-width: 680px;
+      line-height: 2;
+    }
+
+    /* ── EXPERIENCE ────────────────────────────── */
+    .exp-item {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--rule);
+    }
+    .exp-item:first-child { border-top: none; }
+
+    /* Date + tag — Copperplate */
+    .exp-date {
+      font-family: var(--f-sub);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--blue);
+      line-height: 1.7;
+      padding-top: 3px;
+    }
+
+    .exp-tag {
+      display: inline-block;
+      margin-top: 6px;
+      font-family: var(--f-sub);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      color: var(--ink-lt);
+      border: 1px solid var(--rule);
+      padding: 2px 8px;
+    }
+
+    /* Role name — Julius Sans One */
+    .exp-role {
+      font-family: var(--f-title);
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    /* Org name — Copperplate */
+    .exp-org {
+      font-family: var(--f-sub);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--blue);
+      margin-bottom: 0.8rem;
+    }
+
+    /* Bullets — Merriweather */
+    .exp-bullets {
+      list-style: none;
+      padding: 0;
+    }
+    .exp-bullets li {
+      font-family: var(--f-body);
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--ink-lt);
+      line-height: 1.85;
+      padding-left: 1.2rem;
+      position: relative;
+      margin-bottom: 0.4rem;
+    }
+    .exp-bullets li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--blue-lt);
+    }
+
+    /* ── RECOGNITION ───────────────────────────── */
+    .reco-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--rule);
+    }
+
+    .reco-item {
+      background: var(--cream);
+      padding: 2rem 2.5rem;
+      transition: background 0.25s;
+    }
+    .reco-item:hover { background: var(--cream-dk); }
+    .reco-item.full { grid-column: 1 / -1; }
+
+    /* Year — Copperplate */
+    .reco-year {
+      font-family: var(--f-sub);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--blue);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Title — Julius Sans One */
+    .reco-title {
+      font-family: var(--f-title);
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    /* Org — Copperplate */
+    .reco-org {
+      font-family: var(--f-sub);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--blue-lt);
+      margin-bottom: 0.8rem;
+    }
+
+    /* Description — Merriweather */
+    .reco-desc {
+      font-family: var(--f-body);
+      font-size: 0.83rem;
+      font-weight: 300;
+      color: var(--ink-lt);
+      line-height: 1.85;
+    }
+
+    /* ── EDUCATION ─────────────────────────────── */
+    .edu-item {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--rule);
+    }
+    .edu-item:first-child { border-top: none; }
+
+    /* Years — Copperplate */
+    .edu-years {
+      font-family: var(--f-sub);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--blue);
+      padding-top: 3px;
+    }
+
+    /* Degree — Julius Sans One */
+    .edu-degree {
+      font-family: var(--f-title);
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    /* School — Copperplate */
+    .edu-school {
+      font-family: var(--f-sub);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--blue);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Detail — Merriweather */
+    .edu-detail {
+      font-family: var(--f-body);
+      font-size: 0.82rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ink-lt);
+    }
+
+    /* ── SKILLS & LANGUAGES ────────────────────── */
+    .skills-langs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6vw;
+    }
+
+    /* Block label — Copperplate */
+    .block-label {
+      font-family: var(--f-sub);
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--blue-lt);
+      margin-bottom: 1.5rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Skill tags — Merriweather */
+    .skill-tag {
+      font-family: var(--f-body);
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--ink);
+      background: var(--blue-bg);
+      padding: 6px 14px;
+      transition: all 0.2s;
+      cursor: default;
+    }
+    .skill-tag:hover {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .lang-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 0;
+      border-top: 1px solid var(--rule);
+    }
+    .lang-row:first-of-type { border-top: none; }
+
+    /* Language name — Merriweather */
+    .lang-name {
+      font-family: var(--f-body);
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--ink);
+    }
+
+    /* Level — Copperplate */
+    .lang-level {
+      font-family: var(--f-sub);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--blue);
+    }
+
+    /* ── FOOTER BAR ────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 14px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-left {
+      font-family: var(--f-sub);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--ink-lt);
+    }
+    .footer-right {
+      font-family: var(--f-sub);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      color: var(--blue-lt);
+    }
+
+    /* ── MOBILE ────────────────────────────────── */
+    @media (max-width: 768px) {
+      .site-bar { padding: 12px 20px; }
+      .bar-contact { display: none; }
+      #hero { padding: 100px 6vw 70px; }
+      .section { padding: 60px 6vw; }
+      .exp-item, .edu-item { grid-template-columns: 1fr; gap: 0.3rem; }
+      .reco-grid { grid-template-columns: 1fr; }
+      .skills-langs-grid { grid-template-columns: 1fr; gap: 3rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 14px 20px; }
+      .lang-switch { top: 12px; right: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── TOP BAR ─────────────────────────────── -->
+  <div class="site-bar">
+    <span class="bar-name">Lanxin Zheng</span>
+    <span class="bar-contact">lanxinzheng2019@gmail.com · linkedin.com/in/lanxinzheng-</span>
+  </div>
+
+  <!-- ── LANG TOGGLE ──────────────────────────── -->
+  <div class="lang-switch" onclick="toggleLang()">
+    <span class="lang-label left-label">ES</span>
+    <span class="switch-track">
+      <span class="switch-thumb"></span>
+    </span>
+    <span class="lang-label right-label">EN</span>
+  </div>
+  <!-- ── HERO ─────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-label"
+         data-es="Portfolio Personal · Buenos Aires"
+         data-en="Personal Portfolio · Buenos Aires">
+      Portfolio Personal · Buenos Aires
+    </div>
+    <h1 class="hero-name">LANXIN ZHENG</h1>
+    <div class="hero-divider"></div>
+    <p class="hero-desc"
+       data-es="Estudiante de Estudios Internacionales · Coordinación institucional, comunicación estratégica y liderazgo de iniciativas educativas y emprendedoras."
+       data-en="International Studies student · Institutional coordination, strategic communication, and leadership in educational and entrepreneurial initiatives.">
+      Estudiante de Estudios Internacionales · Coordinación institucional, comunicación estratégica y liderazgo de iniciativas educativas y emprendedoras.
+    </p>
+    <div class="hero-links">
+      <a href="mailto:lanxinzheng2019@gmail.com">lanxinzheng2019@gmail.com</a>
+      <span>+54 299 637-8235</span>
+      <a href="https://linkedin.com/in/lanxinzheng-" target="_blank">LinkedIn</a>
+      <span>Buenos Aires, Argentina</span>
+    </div>
+    <div class="ai-tag"
+         data-es="✦ Sitio construido enteramente con IA · sin experiencia previa en código"
+         data-en="✦ Built entirely with AI · no prior coding experience">
+      ✦ Sitio construido enteramente con IA · sin experiencia previa en código
+    </div>
+  </section>
+
+  <!-- ── PROFILE ───────────────────────────────── -->
+  <section class="section" id="profile">
+    <div class="section-header">
+      <span class="section-title" data-es="Perfil" data-en="Profile">Perfil</span>
+      <span class="section-num">01</span>
+    </div>
+    <p class="profile-text"
+       data-es="Combino perspectiva multicultural con habilidades de comunicación, gestión de stakeholders y ejecución de proyectos. He trabajado con organizaciones civiles, educativas, embajadas y actores del sector privado. Interesada en desarrollar una carrera en estrategia, relaciones institucionales y desarrollo de negocios."
+       data-en="I combine a multicultural perspective with communication skills, stakeholder management, and project execution. I have worked with civil organizations, educational institutions, embassies, and private sector actors. Interested in building a career in strategy, institutional relations, and business development.">
+      Combino perspectiva multicultural con habilidades de comunicación, gestión de stakeholders y ejecución de proyectos. He trabajado con organizaciones civiles, educativas, embajadas y actores del sector privado. Interesada en desarrollar una carrera en estrategia, relaciones institucionales y desarrollo de negocios.
+    </p>
+  </section>
+
+  <!-- ── EXPERIENCE ────────────────────────────── -->
+  <section class="section" id="experience">
+    <div class="section-header">
+      <span class="section-title" data-es="Experiencia" data-en="Experience">Experiencia</span>
+      <span class="section-num">02</span>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-date">Mar 2026 –<br><span data-es="Actualidad" data-en="Present">Actualidad</span></div>
+        <div class="exp-tag" data-es="ONG" data-en="NGO">ONG</div>
+      </div>
+      <div>
+        <div class="exp-role" data-es="Tallerista – Programa VIA" data-en="Workshop Facilitator – VIA Program">Tallerista – Programa VIA</div>
+        <div class="exp-org">MiNU Asociación Civil</div>
+        <ul class="exp-bullets">
+          <li data-es="Inicié como voluntaria en febrero 2025 y fui convocada para el rol remunerado de Tallerista en marzo 2026."
+              data-en="Started as a volunteer and was promoted to the paid Workshop Facilitator role in March 2026.">
+            Inicié como voluntaria en febrero 2025 y fui convocada para el rol remunerado de Tallerista en marzo 2026.
+          </li>
+          <li data-es="Facilité talleres de educación vial y participación cívica en 14 colegios del AMBA, guiando a más de 200 estudiantes e impactando indirectamente a más de 8.500 alumnos."
+              data-en="Facilitated road safety and civic engagement workshops in 14 schools across Buenos Aires, reaching 200+ students and indirectly impacting 8,500+.">
+            Facilité talleres de educación vial y participación cívica en 14 colegios del AMBA, guiando a más de 200 estudiantes e impactando indirectamente a más de 8.500 alumnos.
+          </li>
+          <li data-es="Programa financiado por TotalEnergies, con proyección internacional en 24 países."
+              data-en="Program funded by TotalEnergies, with international reach across 24 countries.">
+            Programa financiado por TotalEnergies, con proyección internacional en 24 países.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-date">Feb 2025 –<br><span data-es="Actualidad" data-en="Present">Actualidad</span></div>
+        <div class="exp-tag" data-es="Universitario" data-en="University">Universitario</div>
+      </div>
+      <div>
+        <div class="exp-role" data-es="Coordinadora de Comunicación y Eventos" data-en="Communications & Events Coordinator">Coordinadora de Comunicación y Eventos</div>
+        <div class="exp-org">Diplomatia UTDT</div>
+        <ul class="exp-bullets">
+          <li data-es="Articulé actividades con hasta 350 participantes, gestionando el vínculo institucional con embajadas, referentes políticos y organismos como el ISEN, IPCVA y La Legislatura CABA."
+              data-en="Coordinated events with up to 350 participants, managing institutional ties with embassies, political figures, and bodies such as ISEN, IPCVA, and the Buenos Aires Legislature.">
+            Articulé actividades con hasta 350 participantes, gestionando el vínculo institucional con embajadas, referentes políticos y organismos como el ISEN, IPCVA y La Legislatura CABA.
+          </li>
+          <li data-es="Administro las redes sociales de la organización: más de 500 miembros en WhatsApp y 2.000 seguidores en Instagram."
+              data-en="Manage the organization's social media: 500+ WhatsApp members and 2,000 Instagram followers.">
+            Administro las redes sociales de la organización: más de 500 miembros en WhatsApp y 2.000 seguidores en Instagram.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-date" data-es="Temp. 2024 – 2025" data-en="Seasons 2024–2025">Temp. 2024 – 2025</div>
+        <div class="exp-tag" data-es="Privado" data-en="Private">Privado</div>
+      </div>
+      <div>
+        <div class="exp-role" data-es="Encargada de Turno" data-en="Shift Supervisor">Encargada de Turno</div>
+        <div class="exp-org">Restaurante ZH Canting</div>
+        <ul class="exp-bullets">
+          <li data-es="Supervisé equipos de 7 a 9 personas en turnos de alta demanda, gestionando atención al cliente, resolución de conflictos y control de inventario."
+              data-en="Supervised teams of 7–9 people during high-demand shifts, managing customer service, conflict resolution, and inventory control.">
+            Supervisé equipos de 7 a 9 personas en turnos de alta demanda, gestionando atención al cliente, resolución de conflictos y control de inventario.
+          </li>
+          <li data-es="Adquirí perspectiva de gestión operando desde el rol de empleadora: evaluación de desempeño y coordinación de tareas."
+              data-en="Gained management perspective operating from the employer's side: performance evaluation and task coordination.">
+            Adquirí perspectiva de gestión operando desde el rol de empleadora: evaluación de desempeño y coordinación de tareas.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── RECOGNITION ───────────────────────────── -->
+  <section class="section" id="recognition">
+    <div class="section-header">
+      <span class="section-title" data-es="Reconocimientos" data-en="Recognition">Reconocimientos</span>
+      <span class="section-num">03</span>
+    </div>
+    <div class="reco-grid">
+
+      <div class="reco-item">
+        <div class="reco-year">2023</div>
+        <div class="reco-title" data-es="Finalista – Youth Ambassadors" data-en="Finalist – Youth Ambassadors">Finalista – Youth Ambassadors</div>
+        <div class="reco-org">Embajada de EE.UU. · Argentina & Chile</div>
+        <div class="reco-desc"
+             data-es="Seleccionada en proceso competitivo binacional. Mi propuesta vinculó dos sectores desconectados de la comunidad local: un merendero y un hogar de ancianos."
+             data-en="Selected through a binational competitive process. My proposal connected two disconnected and underserved community sectors: a community kitchen and a senior care home.">
+          Seleccionada en proceso competitivo binacional. Mi propuesta vinculó dos sectores desconectados de la comunidad local: un merendero y un hogar de ancianos.
+        </div>
+      </div>
+
+      <div class="reco-item">
+        <div class="reco-year">2020 · 2021</div>
+        <div class="reco-title" data-es="Ganadora – Premio Itaú de Cuento Digital" data-en="Winner – Itaú Digital Story Prize">Ganadora – Premio Itaú de Cuento Digital</div>
+        <div class="reco-org">Itaú · Categoría Sub-20</div>
+        <div class="reco-desc"
+             data-es="Desarrollé un cuento interactivo 'elige tu propia aventura' en formato web, publicado en la antología internacional con 23 obras de Argentina, Uruguay y Paraguay."
+             data-en="Developed an interactive 'choose your own adventure' story in web format, published in an international anthology with 23 works from Argentina, Uruguay, and Paraguay.">
+          Desarrollé un cuento interactivo 'elige tu propia aventura' en formato web, publicado en la antología internacional con 23 obras de Argentina, Uruguay y Paraguay.
+        </div>
+      </div>
+
+      <div class="reco-item full">
+        <div class="reco-year">2022</div>
+        <div class="reco-title" data-es="Fundadora – Ivy Clothing" data-en="Founder – Ivy Clothing">Fundadora – Ivy Clothing</div>
+        <div class="reco-org" data-es="Emprendimiento · eCommerce de indumentaria" data-en="Venture · Clothing eCommerce">Emprendimiento · eCommerce de indumentaria</div>
+        <div class="reco-desc"
+             data-es="Identifiqué un nicho sin cobertura local y construí un ecommerce de indumentaria gestionando estrategia comercial, proveedores y logística. Más de 50 ventas en 3 meses, 79.000 likes y 217.600 visualizaciones en TikTok."
+             data-en="Identified a gap in the local market and built a clothing eCommerce managing commercial strategy, suppliers, and logistics. Over 50 sales in 3 months, 79,000 likes and 217,600 views on TikTok.">
+          Identifiqué un nicho sin cobertura local y construí un ecommerce de indumentaria gestionando estrategia comercial, proveedores y logística. Más de 50 ventas en 3 meses, 79.000 likes y 217.600 visualizaciones en TikTok.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── EDUCATION ──────────────────────────────── -->
+  <section class="section" id="education">
+    <div class="section-header">
+      <span class="section-title" data-es="Educación" data-en="Education">Educación</span>
+      <span class="section-num">04</span>
+    </div>
+
+    <div class="edu-item">
+      <div class="edu-years">2025 –<br><span data-es="Actualidad" data-en="Present">Actualidad</span></div>
+      <div>
+        <div class="edu-degree" data-es="Lic. en Estudios Internacionales" data-en="B.A. in International Studies">Lic. en Estudios Internacionales</div>
+        <div class="edu-school">Universidad Torcuato Di Tella · UTDT</div>
+        <div class="edu-detail" data-es="Minor en Estrategia e Negociación Internacional (en curso)" data-en="Minor in International Strategy and Negotiation (in progress)">Minor en Estrategia e Negociación Internacional (en curso)</div>
+      </div>
+    </div>
+
+    <div class="edu-item">
+      <div class="edu-years">2018 – 2024</div>
+      <div>
+        <div class="edu-degree" data-es="Bachiller en Letras e Idiomas" data-en="Bachelor in Language Arts">Bachiller en Letras e Idiomas</div>
+        <div class="edu-school">Sunrise School</div>
+        <div class="edu-detail" data-es="Promedio 8,9/10 · IB: Geografía HL, TOK, Monografía · Cambridge IGCSE: Diploma ICE completo" data-en="GPA 8.9/10 · IB: Geography HL, TOK, Extended Essay · Cambridge IGCSE: Full ICE Diploma">Promedio 8,9/10 · IB: Geografía HL, TOK, Monografía · Cambridge IGCSE: Diploma ICE completo</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── SKILLS & LANGUAGES ─────────────────────── -->
+  <section class="section" id="skills">
+    <div class="section-header">
+      <span class="section-title" data-es="Habilidades e Idiomas" data-en="Skills & Languages">Habilidades e Idiomas</span>
+      <span class="section-num">05</span>
+    </div>
+    <div class="skills-langs-grid">
+
+      <div>
+        <div class="block-label" data-es="Habilidades" data-en="Skills">Habilidades</div>
+        <div class="skill-tags">
+          <span class="skill-tag" data-es="Comunicación asertiva" data-en="Assertive communication">Comunicación asertiva</span>
+          <span class="skill-tag" data-es="Gestión institucional" data-en="Institutional management">Gestión institucional</span>
+          <span class="skill-tag" data-es="Stakeholders" data-en="Stakeholder relations">Stakeholders</span>
+          <span class="skill-tag" data-es="Coordinación de equipos" data-en="Team coordination">Coordinación de equipos</span>
+          <span class="skill-tag" data-es="Gestión de proyectos" data-en="Project management">Gestión de proyectos</span>
+          <span class="skill-tag" data-es="Pensamiento crítico" data-en="Critical thinking">Pensamiento crítico</span>
+          <span class="skill-tag" data-es="Resolución de problemas" data-en="Problem solving">Resolución de problemas</span>
+          <span class="skill-tag" data-es="Estrategia" data-en="Strategy">Estrategia</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="block-label" data-es="Idiomas" data-en="Languages">Idiomas</div>
+        <div class="lang-row">
+          <span class="lang-name" data-es="Español" data-en="Spanish">Español</span>
+          <span class="lang-level" data-es="Nativo" data-en="Native">Nativo</span>
+        </div>
+        <div class="lang-row">
+          <span class="lang-name" data-es="Inglés" data-en="English">Inglés</span>
+          <span class="lang-level">C2 · Cambridge CPE</span>
+        </div>
+        <div class="lang-row">
+          <span class="lang-name" data-es="Chino Mandarín" data-en="Mandarin Chinese">Chino Mandarín</span>
+          <span class="lang-level" data-es="Básico" data-en="Basic">Básico</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────── -->
+  <footer>
+    <span class="footer-left">Lanxin Zheng · Buenos Aires · 2025</span>
+    <span class="footer-right"
+          data-es="Construido con IA · sin experiencia previa en código"
+          data-en="Built with AI · no prior coding experience">
+      Construido con IA · sin experiencia previa en código
+    </span>
+  </footer>
+
+  <!-- ── JAVASCRIPT ──────────────────────────────── -->
+  <script>
+    let currentLang = 'es';
+
+    const langSwitch = document.querySelector('.lang-switch');
+
+function toggleLang() {
+  currentLang = currentLang === 'es' ? 'en' : 'es';
+  
+  // Cambiar textos
+  document.querySelectorAll('[data-es]').forEach(el => {
+    el.textContent = el.getAttribute('data-' + currentLang);
+  });
+  
+  // Actualizar atributo lang del HTML
+  document.documentElement.lang = currentLang;
+  
+  // Mover el switch visualmente
+  if (currentLang === 'en') {
+    langSwitch.classList.add('en');
+  } else {
+    langSwitch.classList.remove('en');
+  }
+}
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.06 });
+
+    document.querySelectorAll('.section').forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>
