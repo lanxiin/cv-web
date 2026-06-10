@@ -37,12 +37,14 @@
     a { color: inherit; text-decoration: none; }
     /* ── LANG SWITCH ───────────────────────────── */
 .lang-switch {
+  position: fixed;
+  top: 12px;
+  right: 40px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   cursor: pointer;
   user-select: none;
-  justify-self: center;
 }
 /* Etiquetas "ES" y "EN" */
 .lang-label {
@@ -109,10 +111,9 @@
   border-bottom: 1px solid var(--rule);
   padding: 0 40px;
   height: 48px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
 }
 .bar-name    { justify-self: start; }
 .lang-switch { justify-self: center; } /* ya no tiene position:fixed */
@@ -130,6 +131,7 @@
       font-weight: 300;
       color: var(--ink-lt);
       letter-spacing: 0.03em;
+      max-width: calc(100% - 160px); /* deja espacio para el toggle */
     }
 
     /* ── HERO ──────────────────────────────────── */
@@ -539,14 +541,9 @@
 <body>
 
   <!-- ── TOP BAR ─────────────────────────────── -->
-  <div class="site-bar">
-    <span class="bar-name">Lanxin Zheng</span>
-    <span class="bar-contact">
-      lanxinzheng2019@gmail.com<span class="bar-linkedin"> · linkedin.com/in/lanxinzheng-</span>
-    </span>
-  </div>
-
-  <!-- ── LANG TOGGLE ──────────────────────────── -->
+<!-- ── TOP BAR + LANG SWITCH ──────────────────────── -->
+<div class="site-bar">
+  <span class="bar-name">Lanxin Zheng</span>
   <div class="lang-switch" onclick="toggleLang()">
     <span class="lang-label left-label">ES</span>
     <span class="switch-track">
@@ -554,6 +551,10 @@
     </span>
     <span class="lang-label right-label">EN</span>
   </div>
+  <span class="bar-contact">
+    lanxinzheng2019@gmail.com<span class="bar-linkedin"> · linkedin.com/in/lanxinzheng-</span>
+  </span>
+</div>
   <!-- ── HERO ─────────────────────────────────── -->
   <section id="hero">
     <div class="hero-label"
